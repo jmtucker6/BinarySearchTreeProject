@@ -12,8 +12,8 @@
  * Written by Jacob Tucker
  */
 
-static Node *findNode(Node *, char *);
-static Node *deleteNode(Node *, char *);
+static Node *findNode(BST *, Node *, char *);
+static void deleteNode(BST *, char *);
 /*
  * PUBLIC FUNCTIONS
  */
@@ -21,70 +21,69 @@ static Node *deleteNode(Node *, char *);
 /*
  * Inserts a key-data pair into the binary search tree
  */
-Node *insertWord(Node *root, Node *parent,  char *key) {
-    if (root == NULL) {
-        root = newNode(parent, key);
-    } else if (strcmp(root -> key, key) == 0) {
-        root = increaseNodeFrequency(root);
-    } else if (strcmp(key, root -> key) <= 0) {
-        root -> left = insertWord(root -> left, root,  key);
-    } else {
-        root -> right = insertWord(root -> right, root,  key);
+
+void insertWord(BST *tree, Node *parent, char *key) {
+    if (isEmptyTree(tree)) {
+        tree -> root = newNode(NULL, key);
+        tree -> root -> parent = tree -> root;
+        return;
     }
-        return root;
+    if (strcmp(key, parent -> key) == 0) {
+        increaseNodeFrequency(parent);
+    } else if (strcmp(key, parent -> key) < 0) {
+        if (parent -> left == NULL) {
+            parent -> left = newNode(parent, key);
+        } else {
+            insertWord(tree, parent -> left, key);
+        }
+    } else {
+        if (parent -> right == NULL) {
+            parent -> right = newNode(parent, key);
+        } else {
+            insertWord(tree, parent -> left, key);
+        }
+    }
 };
 
 /*
  * Deletes a word from the tree (decreases frequency)
  */
-Node *deleteWord(Node *root, char *key) {
-    Node *node = findNode(root, key);
+void deleteWord(BST *tree, char *key) {
+    Node *node = findNode(tree, tree -> root, key);
     if (node == NULL)
         fprintf(stderr, "Can't delete a word that is not in the tree\n");
-    node = decreaseNodeFrequency(node);
+    decreaseNodeFrequency(node);
     if (node -> frequency <= 0)
-        root = deleteNode(root, key);
-    return root;
-}
+        deleteNode(tree, key);
+};
 
 /*
  * Returns the frequency paired with the given key
  */
-int findKey(Node *root, char *key) {
-    if (isEmptyTree(root))
-        return -1;
-    int comp = strcmp(key, root -> key);
-    if (comp > 0) {
-        return findKey(root -> right, key);
-    } else if (comp < 0) {
-        return findKey(root -> left, key);
-    } else {
-        return root -> frequency;
-    }
-    return -1;
+int findKey(BST *tree, Node *node, char *key) {
+    Node *temp = findNode(tree, node, key);
+    return (temp == NULL) ? -1 : temp -> frequency;
 };
 
 /*
  * Increases frequency of a node
  */
-Node *increaseNodeFrequency(Node *root) {
+void increaseNodeFrequency(Node *root) {
     root -> frequency++;
-    return root;
 };
 
 /*
  * Decreases frequency of a node
  */
-Node *decreaseNodeFrequency(Node *node) {
+void decreaseNodeFrequency(Node *node) {
     node -> frequency--;
-    return node;
 };
 
 /*
  * Returns if the tree is empty
  */
-bool isEmptyTree(Node *root) {
-    if (root == NULL)
+bool isEmptyTree(BST *tree) {
+    if (tree -> root == NULL)
         return true;
     return false;
 };
@@ -99,6 +98,7 @@ Node *newNode(Node *parent, char *key) {
         Fatal("Out of Mememory\n");
     node -> key = key;
     node -> frequency = 1;
+    node -> level = (parent == NULL) ? 0 : parent -> level;
     node -> parent = parent;
     node -> left = NULL;
     node -> right = NULL;
@@ -112,16 +112,16 @@ Node *newNode(Node *parent, char *key) {
 /*
  * Returns the node assosciated with its key
  */
-static Node *findNode(Node *root, char *key) {
-    if (isEmptyTree(root))
+static Node *findNode(BST *tree, Node *node, char *key) {
+    if (isEmptyTree(tree))
         return NULL;
-    int comp = strcmp(key, root -> key);
+    int comp = strcmp(key, node -> key);
     if (comp > 0) {
-        return findNode(root -> right, key);
+        return findNode(tree, node -> right, key);
     } else if (comp < 0) {
-        return findNode(root -> left, key);
+        return findNode(tree, node -> left, key);
     } else {
-        return root;
+        return node;
     }
     return NULL;
 };
@@ -129,8 +129,9 @@ static Node *findNode(Node *root, char *key) {
 /*
  * Removes a node from the tree, and then fixes the tree
  */
-static Node * deleteNode(Node *root, char *key)
+static void deleteNode(BST *tree, char *key)
 {
+    if (isEmptyTree(tree))
+        fprintf(stderr, "Cannot delete from empty tree\n");
     fprintf(stderr, "Delete Node on %s  not implemented\n", key);
-    return root;
 };
