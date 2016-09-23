@@ -1,7 +1,6 @@
-#include <stdbool.h>
-
 #ifndef BST_H
 #define BST_H
+#include <stdbool.h>
 
 typedef struct Node {
     char *key;
@@ -13,8 +12,11 @@ typedef struct Node {
 
 } Node;
 
+#include "queue.h"
 typedef struct BST {
     Node *root;
+    int height;
+    Queue *q;
 } BST;
 
 
@@ -25,5 +27,7 @@ extern void increaseNodeFrequency(Node *);
 extern void decreaseNodeFrequency(Node *);
 extern bool isEmptyTree(BST *);
 extern Node *newNode(Node *, char *);
+extern BST *newBST();
+extern void traversal(BST *);
 
 #endif
