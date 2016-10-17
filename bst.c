@@ -1,4 +1,5 @@
 #include "fatal.h"
+#include "node.h"
 #include "bst.h"
 #include "queue.h"
 #include <stdlib.h>
@@ -13,10 +14,10 @@
  * Written by Jacob Tucker
  */
 
-static Node *findNode(BST *, Node *, char *);
 static void deleteNode(BST *, Node *);
 static Node *treeMinimum(Node *);
 static void transplant(BST *, Node *, Node *);
+static void setLevels(BST *, Node *);
 /*
  * PUBLIC FUNCTIONS
  */
@@ -116,6 +117,7 @@ void traversal(BST *tree)
 {
     if (isEmptyTree(tree))
         return;
+    setLevels(tree, tree -> root);
     Node *node = tree -> root;
     node -> parent = node;
     enqueue(tree -> q, node);
@@ -150,7 +152,7 @@ void traversal(BST *tree)
 /*
  * Returns the node assosciated with its key
  */
-static Node *findNode(BST *tree, Node *node, char *key) {
+Node *findNode(BST *tree, Node *node, char *key) {
     if (isEmptyTree(tree))
         return NULL;
     int comp = strcmp(key, node -> key);
@@ -214,3 +216,11 @@ static void transplant(BST *tree, Node *currNode, Node *replacement) {
     if (replacement != NULL)
         replacement -> parent = currNode -> parent;
 };
+
+static void setLevels(BST *tree, Node *node) {
+    if (node == NULL)
+        return;
+    node -> level = (node == tree -> root) ? 1 : node -> parent -> level + 1;
+    setLevels(tree, node -> left);
+    setLevels(tree , node -> right);
+}

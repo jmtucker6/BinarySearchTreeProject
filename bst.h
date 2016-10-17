@@ -19,5 +19,6 @@ extern void decreaseNodeFrequency(Node *);
 extern bool isEmptyTree(BST *);
 extern BST *newBST();
 extern void traversal(BST *);
+extern Node *findNode(BST *, Node *, char *);
 
 #endif

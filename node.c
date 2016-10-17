@@ -13,6 +13,7 @@ Node *newNode(Node *parent, char *key) {
         Fatal("Out of Mememory\n");
     node -> key = key;
     node -> frequency = 1;
+    node -> height = 1;
     node -> level = (parent == NULL) ? 1 : parent -> level + 1;
     node -> parent = parent;
     node -> balanceFactor = 0;

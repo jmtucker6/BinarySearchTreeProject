@@ -5,6 +5,7 @@ typedef struct Node {
     char *key;
     int frequency;
     int level;
+    int height;
     int balanceFactor;
     struct Node *parent;
     struct Node *left;
