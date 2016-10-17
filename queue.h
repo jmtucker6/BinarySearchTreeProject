@@ -8,6 +8,7 @@ typedef struct Queue {
 } Queue;
 
 #include "bst.h"
+#include "node.h"
 struct QueueNode{
     Node *data;
     struct QueueNode *next;

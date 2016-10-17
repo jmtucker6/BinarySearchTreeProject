@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include "queue.h"
 #include "fatal.h"
+#include "node.h"
 
 /*
  * queue.c
