@@ -12,7 +12,9 @@
  * Written by Jacob Tucker
  */
 
-static void insertionFixup(BST *, char *);
+static void deleteNodeAVL(BST *, Node *);
+static void insertionFixup(BST *, Node *);
+static void deletionFixup(BST *, Node *);
 static void rotateLeft(BST *, Node *);
 static void rotateRight(BST *, Node *);
 static void setBalance(Node *);
@@ -20,6 +22,9 @@ static bool favorsSibling(Node *);
 static Node *favoriteChild(Node *);
 static bool isLinear(Node *, Node *, Node *);
 static void rotate(BST *, Node *, Node *);
+static int numChildren(Node *);
+static void swapNodes(Node *, Node *);
+static void deleteLeafNode(Node *);
 
 /**
  * PUBLIC FUNCTIONS
@@ -27,18 +32,47 @@ static void rotate(BST *, Node *, Node *);
 
 void insertWordAVL(BST *tree, Node *parent, char *key) {
     insertWord(tree, parent, key);
-    insertionFixup(tree, key);
+    insertionFixup(tree, findNode(tree, tree -> root, key));
     tree -> height = tree -> root -> height;
 };
-void deleteWordAVL(BST *, char *);
+void deleteWordAVL(BST *tree, char *key) {
+    if(isEmptyTree(tree))
+        fprintf(stderr, "Can't Delete from Empty Tree\n");
+    Node *node = findNode(tree, tree -> root, key);
+    if(node == NULL)
+        fprintf(stderr, "Node to Delete Does Not Exist\n");
+    else if (node -> frequency > 1) {
+        decreaseNodeFrequency(node);
+        return;
+    } else
+        deleteNodeAVL(tree, node);
+};
 void traversalAVL(BST *);
 
 /**
  * PRIVATE FUNCTIONS
  */
 
-static void insertionFixup(BST *tree, char *key) {
-    Node *node = findNode(tree, tree->root, key);
+static void deleteNodeAVL(BST *tree, Node *node) {
+    if (numChildren(node) == 0) {
+        node -> height = 0;
+        deletionFixup(tree, node -> parent);
+        deleteLeafNode(node);
+    } else if (numChildren(node) == 1) {
+        if (node -> right != NULL) {
+            transplant(tree, node, node -> right);
+            deletionFixup(tree, node -> right);
+        } else {
+            transplant(tree, node, node -> left);
+            deletionFixup(tree, node -> left);
+        }
+    } else {
+        Node *succ = treeMinimum(node -> right);
+        swapNodes(node, succ);
+        deleteNodeAVL(tree, node);
+    }
+}
+static void insertionFixup(BST *tree, Node *node) {
     while (node != tree -> root) {
         if (favorsSibling(node)) {
             setBalance(node -> parent);
@@ -61,6 +95,37 @@ static void insertionFixup(BST *tree, char *key) {
                 setBalance(node);
             }
             return;
+        }
+    }
+}
+
+static void deletionFixup(BST *tree, Node *node) {
+    while (node != tree -> root) {
+        if (node == favoriteChild(node -> parent)) {
+            setBalance(node -> parent);
+            node = node -> parent;
+        } else if (node -> parent -> balanceFactor == 0) {
+            setBalance(node -> parent);
+            return;
+        } else {
+            Node *parent = node -> parent;
+            Node *sibling = favoriteChild(parent);      // favorite child is sibling
+            Node *y = favoriteChild(sibling);
+            if (y != NULL && !isLinear(y, sibling, parent)) {
+                rotate(tree, y, sibling);
+                rotate(tree, y, parent);
+                setBalance(parent);
+                setBalance(sibling);
+                setBalance(y);
+                node = y;
+            } else {
+                rotate(tree, sibling, parent);
+                setBalance(parent);
+                setBalance(sibling);
+                if (y == NULL)
+                    return;
+                node = sibling;
+            }
         }
     }
 }
@@ -129,4 +194,43 @@ static void rotate(BST *tree, Node *src, Node *dest) {
         rotateRight(tree, dest);
     else
         rotateLeft(tree, dest);
+}
+
+static int numChildren(Node *node) {
+    if (node -> left != NULL)
+        return node -> right != NULL ? 2 : 1;
+    else if (node -> right != NULL)
+        return 1;
+    return 0;
+}
+
+static void swapNodes(Node *node1, Node *node2) {
+    if (node1 -> left != NULL)
+        node1 -> left -> parent = node2;
+    if (node1 -> right != NULL)
+        node1 -> right -> parent = node2;
+    if (node2 -> left != NULL)
+        node2 -> left -> parent = node1;
+    if (node2 -> right != NULL)
+        node2 -> right -> parent = node1;
+    
+    Node *temp = node1 -> parent;
+    node1 -> parent = node2 -> parent;
+    node2 -> parent = temp;
+
+    temp = node1 -> left;
+    node1 -> left = node2 -> left;
+    node2 -> left = temp;
+    
+    temp = node1 -> right;
+    node1 -> right = node2 -> right;
+    node2 -> right = temp;
+}
+
+static void deleteLeafNode(Node *node) {
+    if (node == node -> parent -> left)
+        node -> parent -> left = NULL;
+    else
+        node -> parent -> right = NULL;
+    node -> parent = NULL;
 }

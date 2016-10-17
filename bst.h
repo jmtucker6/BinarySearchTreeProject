@@ -20,5 +20,7 @@ extern bool isEmptyTree(BST *);
 extern BST *newBST();
 extern void traversal(BST *);
 extern Node *findNode(BST *, Node *, char *);
+extern void transplant(BST *, Node *, Node *);
+extern Node *treeMinimum(Node *);
 
 #endif

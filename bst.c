@@ -15,8 +15,6 @@
  */
 
 static void deleteNode(BST *, Node *);
-static Node *treeMinimum(Node *);
-static void transplant(BST *, Node *, Node *);
 static void setLevels(BST *, Node *);
 /*
  * PUBLIC FUNCTIONS
@@ -198,14 +196,14 @@ static void deleteNode(BST *tree, Node *node)
     // fprintf(stderr, "Delete Node on %s  not implemented\n", key);
 };
 
-static Node *treeMinimum(Node *root) {
+Node *treeMinimum(Node *root) {
     while (root -> left != NULL)
         root = root -> left;
     return root;
 };
 
 
-static void transplant(BST *tree, Node *currNode, Node *replacement) {
+void transplant(BST *tree, Node *currNode, Node *replacement) {
 
     if (currNode == tree -> root)
         tree -> root = replacement;
