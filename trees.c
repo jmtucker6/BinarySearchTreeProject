@@ -6,6 +6,7 @@
 #include "avl.h"
 #include "fatal.h"
 #include "scanner.h"
+#include "stats.h"
 
 typedef enum TreeType {NORMAL, AVL} TreeType;
 static char *readNextToken(FILE *);

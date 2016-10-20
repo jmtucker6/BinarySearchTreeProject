@@ -1,5 +1,5 @@
 OPTS = -std=c99 -g -Wall
-OBJS = trees.o bst.o fatal.o scanner.o queue.o avl.o node.o
+OBJS = trees.o bst.o fatal.o scanner.o queue.o avl.o node.o stats.o
 trees : $(OBJS)
 	gcc $(OPTS) $(OBJS) -o trees
 trees.o : trees.c bst.h
@@ -16,6 +16,8 @@ avl.o : avl.h avl.c queue.h node.h
 	gcc $(OPTS) -c avl.c
 node.o : node.h node.c
 	gcc $(OPTS) -c node.c
+stats.o: stats.h stats.c queue.h bst.h
+	gcc $(OPTS) -c stats.c
 clean : 
 	rm -rf $(OBJS) trees
 test : trees

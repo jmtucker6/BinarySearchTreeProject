@@ -150,11 +150,6 @@ void setLevels(BST *tree, Node *node) {
     setLevels(tree , node -> right);
 }
 
-void reportStats(BST *tree) {
-    if (isEmptyTree(tree))
-        return;
-    fprintf(stderr, "REPORT NOT IMPLEMENTED\n");
-}
 /*
  * PRIVATE FUNCTIONS
  */
