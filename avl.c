@@ -25,6 +25,7 @@ static void rotate(BST *, Node *, Node *);
 static int numChildren(Node *);
 static void swapNodes(Node *, Node *);
 static void deleteLeafNode(Node *);
+static char getFavSymbol(Node *);
 
 /**
  * PUBLIC FUNCTIONS
@@ -47,7 +48,38 @@ void deleteWordAVL(BST *tree, char *key) {
     } else
         deleteNodeAVL(tree, node);
 };
-void traversalAVL(BST *);
+void traversalAVL(BST *tree) {;
+    if (isEmptyTree(tree))
+        return;
+    setLevels(tree, tree -> root);
+    Node *node = tree -> root;
+    node -> parent = node;
+    enqueue(tree -> q, node);
+    for (int i = 1; i <= tree -> height; i++) {
+        printf("%d: ", i);
+        while (!isEmptyQueue(tree -> q) && tree -> q -> head -> data -> level == i) {
+            node = dequeue(tree -> q);
+            if (node -> left != NULL)
+                enqueue(tree -> q, node -> left);
+            if (node -> right != NULL)
+                enqueue(tree -> q, node -> right);
+            if (node -> right == NULL && node -> left == NULL)
+                printf("=");
+            printf("%s%c(%s%c)%d", node -> key, getFavSymbol(node),
+                    node -> parent -> key, getFavSymbol(node -> parent),
+                    node -> frequency);
+            if (node == node -> parent -> left)
+                printf("L");
+            else if (node == node -> parent -> right) {
+                printf("R");
+            } else {
+                printf("X");
+            }
+            printf(" ");
+        }
+        printf("\n");
+    };
+}
 
 /**
  * PRIVATE FUNCTIONS
@@ -233,4 +265,12 @@ static void deleteLeafNode(Node *node) {
     else
         node -> parent -> right = NULL;
     node -> parent = NULL;
+}
+
+static char getFavSymbol(Node *node) {
+    if (node -> balanceFactor < 0)
+        return '-';
+    else if (node -> balanceFactor > 0)
+        return '+';
+    return '\0';
 }

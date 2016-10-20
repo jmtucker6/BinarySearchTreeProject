@@ -22,5 +22,7 @@ extern void traversal(BST *);
 extern Node *findNode(BST *, Node *, char *);
 extern void transplant(BST *, Node *, Node *);
 extern Node *treeMinimum(Node *);
+extern void reportStats(BST *);
+extern void setLevels(BST *, Node *);
 
 #endif

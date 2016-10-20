@@ -32,8 +32,45 @@ int main(int argc, char **argv)
         }
         temp = readNextToken(fp);
     }
-    traversal(bst);
     printf("Tree Height: %d\n", bst -> height);
+    fclose(fp);
+    fp = fopen(argv[3], "r");
+    temp = readNextToken(fp);
+    while(!feof(fp)) {
+        temp = cleanString(temp);
+        if (temp != '\0') {
+            switch(*temp) {
+                case 'i':
+                    temp = cleanString(readNextToken(fp));
+                    if (treeType == NORMAL)
+                        insertWord(bst, bst -> root, temp);
+                    else
+                        insertWordAVL(bst, bst -> root, temp);
+                    break;
+                case 'd':
+                    temp = cleanString(readNextToken(fp));
+                    if (treeType == NORMAL)
+                        deleteWord(bst, temp);
+                    else
+                        deleteWordAVL(bst, temp);
+                    break;
+                case 'f':
+                    temp = cleanString(readNextToken(fp));
+                    printf("%d\n", findKey(bst, bst -> root, temp));
+                    break;
+                case 's':
+                    if (treeType == NORMAL)
+                        traversal(bst);
+                    else
+                        traversalAVL(bst);
+                    break;
+                case 'r':
+                    reportStats(bst);
+                    break;
+            }
+        }
+        temp = readNextToken(fp);
+    }
     return 0;
 }
 

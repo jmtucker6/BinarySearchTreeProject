@@ -15,7 +15,6 @@
  */
 
 static void deleteNode(BST *, Node *);
-static void setLevels(BST *, Node *);
 /*
  * PUBLIC FUNCTIONS
  */
@@ -70,7 +69,7 @@ void deleteWord(BST *tree, char *key) {
  */
 int findKey(BST *tree, Node *node, char *key) {
     Node *temp = findNode(tree, node, key);
-    return (temp == NULL) ? -1 : temp -> frequency;
+    return (temp == NULL) ? 0 : temp -> frequency;
 };
 
 /*
@@ -143,6 +142,19 @@ void traversal(BST *tree)
     };
 }
 
+void setLevels(BST *tree, Node *node) {
+    if (node == NULL)
+        return;
+    node -> level = (node == tree -> root) ? 1 : node -> parent -> level + 1;
+    setLevels(tree, node -> left);
+    setLevels(tree , node -> right);
+}
+
+void reportStats(BST *tree) {
+    if (isEmptyTree(tree))
+        return;
+    fprintf(stderr, "REPORT NOT IMPLEMENTED\n");
+}
 /*
  * PRIVATE FUNCTIONS
  */
@@ -153,6 +165,8 @@ void traversal(BST *tree)
 Node *findNode(BST *tree, Node *node, char *key) {
     if (isEmptyTree(tree))
         return NULL;
+    if (node == NULL)
+        return NULL;
     int comp = strcmp(key, node -> key);
     if (comp > 0) {
         return findNode(tree, node -> right, key);
@@ -161,7 +175,6 @@ Node *findNode(BST *tree, Node *node, char *key) {
     } else {
         return node;
     }
-    return NULL;
 };
 
 /*
@@ -215,10 +228,3 @@ void transplant(BST *tree, Node *currNode, Node *replacement) {
         replacement -> parent = currNode -> parent;
 };
 
-static void setLevels(BST *tree, Node *node) {
-    if (node == NULL)
-        return;
-    node -> level = (node == tree -> root) ? 1 : node -> parent -> level + 1;
-    setLevels(tree, node -> left);
-    setLevels(tree , node -> right);
-}
