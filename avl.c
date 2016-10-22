@@ -25,7 +25,7 @@ static void rotate(BST *, Node *, Node *);
 static int numChildren(Node *);
 static void swapNodes(Node *, Node *);
 static void deleteLeafNode(Node *);
-static char getFavSymbol(Node *);
+static char *getFavSymbol(Node *);
 
 /**
  * PUBLIC FUNCTIONS
@@ -65,7 +65,7 @@ void traversalAVL(BST *tree) {;
                 enqueue(tree -> q, node -> right);
             if (node -> right == NULL && node -> left == NULL)
                 printf("=");
-            printf("%s%c(%s%c)%d", node -> key, getFavSymbol(node),
+            printf("%s%s(%s%s)%d", node -> key, getFavSymbol(node),
                     node -> parent -> key, getFavSymbol(node -> parent),
                     node -> frequency);
             if (node == node -> parent -> left)
@@ -267,10 +267,10 @@ static void deleteLeafNode(Node *node) {
     node -> parent = NULL;
 }
 
-static char getFavSymbol(Node *node) {
+static char *getFavSymbol(Node *node) {
     if (node -> balanceFactor < 0)
-        return '-';
+        return "j";
     else if (node -> balanceFactor > 0)
-        return '+';
-    return '\0';
+        return "+";
+    return "";
 }

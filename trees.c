@@ -33,7 +33,6 @@ int main(int argc, char **argv)
         }
         temp = readNextToken(fp);
     }
-    printf("Tree Height: %d\n", bst -> height);
     fclose(fp);
     fp = fopen(argv[3], "r");
     temp = readNextToken(fp);
