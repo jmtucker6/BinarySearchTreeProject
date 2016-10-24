@@ -25,58 +25,55 @@ static qnode *newQNode(tnode *,qnode *);
 queue *
 newQueue(void)
     {
-        queue *q= malloc(sizeof(queue));
-        if (q== 0)
-            fprintf(stderr, "Out of Memory\n");
-        q-> head = 0;
-        q-> tail = 0;
-        return q;
+    queue *q = malloc(sizeof(queue));
+    if (q == 0) Fatal("out of memory\n");
+    q->head = 0;
+    q->tail = 0;
+    return q;
     }
 
 
 /* standard queue methods */
 
 tnode *
-peekQueue(queue *q)
+peek(queue *q)
     {
-    return q -> head -> value;
+    return q->head->value;
     }
 
 void
 enqueue(queue *q,tnode *value)
     {
-        if (isEmptyQueue(q)) {
-            q -> head = newQNode(value, 0);
-            q -> tail = q-> head;
-        } else {
-            q -> tail -> next = newQNode(value, 0);
-            q -> tail = q -> tail -> next;
+    if (q->head == 0)
+        {
+        q->head = newQNode(value,0);
+        q->tail = q->head;
+        }
+    else
+        {
+        q->tail->next = newQNode(value,0);
+        q->tail = q->tail->next;
         }
     }
 
 tnode *
 dequeue(queue *q)
     {
-        qnode *node = q -> head;
-        q -> head = q -> head -> next;
-        return node -> value;
+    tnode *temp = q->head->value;
+    q->head = q->head->next;
+    if (q->head == 0) q->tail = 0;
+    return temp;
     }
 
 int
-isEmptyQueue(queue *q)
+isEmpty(queue *q)
     {
-        return (q -> head == NULL) ? 1 : 0;
+    return q->head == 0;
     }
 
 /**************** Private Methods ********************/
 
-/*
- * constructor for a node in a linked-list based queue 
- * this constructor will be used by enqueue - right now
- * it generates a compiler warning (which will go away
- * once enqueue is implemented.
- *
- */
+/* constructor for a node in a linked-list based queue */
 
 static qnode *
 newQNode(tnode *value,qnode *next)

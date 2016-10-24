@@ -119,8 +119,9 @@ void traversal(BST *tree)
     node -> parent = node;
     enqueue(tree -> q, node);
     for (int i = 1; i <= tree -> height; i++) {
-        printf("%d: ", i);
+        printf("%d:", i);
         while (!isEmptyQueue(tree -> q) && tree -> q -> head -> data -> level == i) {
+            printf(" ");
             node = dequeue(tree -> q);
             if (node -> left != NULL)
                 enqueue(tree -> q, node -> left);
@@ -136,7 +137,6 @@ void traversal(BST *tree)
             } else {
                 printf("X");
             }
-            printf(" ");
         }
         printf("\n");
     };

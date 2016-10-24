@@ -86,10 +86,17 @@ static char *readNextToken(FILE *fp) {
 static char *cleanString(char *s)
 {
     char *dest = s, *src = s;
+    bool isPrevSpace = false;
     while (*src != '\0') {
-        if (isalpha(*src) || *src == ' ') {
+        if (isalpha(*src)) {
             *dest = tolower(*src);
             dest++;
+            isPrevSpace = false;
+        }
+        if ((*src == ' ' || *src == '\t') && !isPrevSpace) {
+            *dest = ' ';
+            dest++;
+            isPrevSpace = true;
         }
         src++;
     }

@@ -7,7 +7,7 @@
  *
  */
 
-typedef struct tnode        /* this is a AVL tree node */
+typedef struct tnode        /* this is a red-black tree node */
     {
     char *name;
     struct tnode *parent;

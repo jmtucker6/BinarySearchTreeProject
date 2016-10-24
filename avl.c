@@ -56,9 +56,10 @@ void traversalAVL(BST *tree) {;
     node -> parent = node;
     enqueue(tree -> q, node);
     for (int i = 1; i <= tree -> height; i++) {
-        printf("%d: ", i);
+        printf("%d:", i);
         while (!isEmptyQueue(tree -> q) && tree -> q -> head -> data -> level == i) {
             node = dequeue(tree -> q);
+            printf(" ");
             if (node -> left != NULL)
                 enqueue(tree -> q, node -> left);
             if (node -> right != NULL)
@@ -75,7 +76,6 @@ void traversalAVL(BST *tree) {;
             } else {
                 printf("X");
             }
-            printf(" ");
         }
         printf("\n");
     };
@@ -269,7 +269,7 @@ static void deleteLeafNode(Node *node) {
 
 static char *getFavSymbol(Node *node) {
     if (node -> balanceFactor < 0)
-        return "j";
+        return "-";
     else if (node -> balanceFactor > 0)
         return "+";
     return "";

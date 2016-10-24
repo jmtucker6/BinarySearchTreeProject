@@ -1,8 +1,0 @@
-1: needj(needj)1X 
-2: fourj(needj)1L side(needj)1R 
-3: attractive+(fourj)1L is(fourj)8R pete(side)2L to(side)6R 
-4: all+(attractive+)1L cigarettes(attractive+)1R illusions(is)1L little(is)1R packet(pete)1L retainedj(pete)1R subtle(to)1L white(to)1R 
-5: about(all+)1L and(all+)9R black(cigarettes)1L draw+(cigarettes)1R gold(illusions)1L in(illusions)3R know(little)1L loyal+(little)1R of(packet)6L personalitiesj(packet)1R please+(retainedj)1L seducedj(retainedj)1R soldiers+(subtle)1L that(subtle)11R walls(white)1L with(white)1R 
-6: =a(about)5L =addicted(about)1R anj(and)1L are+(and)2R beguilingj(black)1L boring+(black)1R death+(draw+)2L factj(draw+)1R give(gold)1L ij(gold)2R implicationj(in)1L insigniaj(in)1R kill(know)1L life(know)1R =love(loyal+)1L neatj(loyal+)1R notice+(of)1L one(of)1R painting+(personalitiesj)1L =personality(personalitiesj)1R =pitch(please+)1L regalj(please+)1R =royal(seducedj)1L =siren(soldiers+)1L starts+(soldiers+)2R sweetj(that)3L these(that)1R truth(walls)1L wealth+(walls)1R why+(with)2L you(with)4R 
-7: =also(anj)1L =attention(are+)1R beautyj(beguilingj)1L =bitter(beguilingj)2R =bold(boring+)1L call(boring+)1R =discussion(death+)1R endsj(factj)2L =flip(factj)1R =friends(give)1L =glamour(give)1R =grandeur(ij)1L =im(implicationj)1L =indeed(insigniaj)1L =its(kill)2L =kingsize(kill)1R =lie(life)1L =light(life)1R =me(neatj)1L =now(notice+)1R =oh(one)1L =other(one)1R =pass(painting+)1R =random quotes check(regalj)1L =statement(starts+)1R =suggestion(sweetj)1L =the(these)8L =those(these)1R =towards(truth)1L =trying(truth)2R =which(wealth+)1R =will(why+)1R =written(you)1L =your(you)4R 
-8: =back(beautyj)1L =by(call)1L =cannot(call)1R =drugs(endsj)1L 

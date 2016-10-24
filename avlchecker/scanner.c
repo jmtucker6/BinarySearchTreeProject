@@ -43,6 +43,11 @@
  *        the caller should free the returned string
  *      - returns 0 if end of file; feof will subsequently return true
  *      - usage example: char *x = readString(stdin);
+ *    stringPending(FILE *fp)
+ *      - returns true if the next non-whitespace character is a double quote
+ *      - any preceeding whitespace is consumed, but the non-whitespace
+ *        character that was read is returned to the input stream
+ *      - usage example: if (stringPending(stdin)) x = readString(stdin);
  *    readLine(FILE *fp) 
  *      - reads in a line or remainder of a line
  *      - returns a malloc'd string; the newline is not included
@@ -149,6 +154,7 @@ readString(FILE *fp)
     /* advance to the double quote */
 
     skipWhiteSpace(fp);
+    if (feof(fp)) return 0;
 
     ch = fgetc(fp);
     if (ch == EOF) return 0;
@@ -218,6 +224,7 @@ readToken(FILE *fp)
     int size = 80;
 
     skipWhiteSpace(fp);
+    if (feof(fp)) return 0;
 
     ch = fgetc(fp);
     if (ch == EOF) return 0;
@@ -285,6 +292,15 @@ readLine(FILE *fp)
     return buffer;
     }
 
+int
+stringPending(FILE *fp)
+   {
+   char ch = readChar(fp);
+   int result = ch == '\"';
+   ungetc(ch,fp);
+   return result;
+   }
+
 /********** private functions **********************/
 
 static void
@@ -293,6 +309,8 @@ skipWhiteSpace(FILE *fp)
     int ch;
 
     /* read chars until a non-whitespace character is encountered */
+
+    if (feof(fp)) return;
 
     while ((ch = fgetc(fp)) != EOF && isspace(ch))
         continue;

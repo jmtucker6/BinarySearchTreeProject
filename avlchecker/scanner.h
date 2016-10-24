@@ -11,6 +11,7 @@ extern double readReal(FILE *);
 extern char readChar(FILE *);
 extern char readRawChar(FILE *);
 extern char *readString(FILE *);
+extern int stringPending(FILE *);
 extern char *readToken(FILE *);
 extern char *readLine(FILE *);
 extern void *allocate(size_t);
