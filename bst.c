@@ -143,11 +143,11 @@ void traversal(BST *tree)
 }
 
 void setLevels(BST *tree, Node *node) {
-    if (node == NULL)
-        return;
     node -> level = (node == tree -> root) ? 1 : node -> parent -> level + 1;
-    setLevels(tree, node -> left);
-    setLevels(tree , node -> right);
+    if (node -> left != NULL)
+        setLevels(tree, node -> left);
+    if (node -> right != NULL)
+        setLevels(tree , node -> right);
 }
 
 /*

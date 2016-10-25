@@ -18,7 +18,7 @@ static void deletionFixup(BST *, Node *);
 static void rotateLeft(BST *, Node *);
 static void rotateRight(BST *, Node *);
 static void setBalance(Node *);
-static bool favorsSibling(Node *);
+static bool isParentFavoringSibling(Node *);
 static Node *favoriteChild(Node *);
 static bool isLinear(Node *, Node *, Node *);
 static void rotate(BST *, Node *, Node *);
@@ -26,6 +26,7 @@ static int numChildren(Node *);
 static void swapNodes(Node *, Node *);
 static void deleteLeafNode(Node *);
 static char *getFavSymbol(Node *);
+static void rotateUpFavoredSubtree(BST *, Node *);
 
 /**
  * PUBLIC FUNCTIONS
@@ -33,7 +34,9 @@ static char *getFavSymbol(Node *);
 
 void insertWordAVL(BST *tree, Node *parent, char *key) {
     insertWord(tree, parent, key);
-    insertionFixup(tree, findNode(tree, tree -> root, key));
+    Node *node = findNode(tree, tree -> root, key);
+    if (node -> frequency == 1)
+        insertionFixup(tree, findNode(tree, tree -> root, key));
     tree -> height = tree -> root -> height;
 };
 void deleteWordAVL(BST *tree, char *key) {
@@ -106,26 +109,14 @@ static void deleteNodeAVL(BST *tree, Node *node) {
 }
 static void insertionFixup(BST *tree, Node *node) {
     while (node != tree -> root) {
-        if (favorsSibling(node)) {
+        if (isParentFavoringSibling(node)) {
             setBalance(node -> parent);
             return;
         } else if (node -> parent -> balanceFactor == 0) {
             setBalance(node -> parent);
             node = node -> parent;
         } else {
-            Node *y = favoriteChild(node);
-            Node *p = node -> parent;
-            if (y != NULL && !isLinear(y, node, p)) {
-                rotate(tree, y, node);
-                rotate(tree, y, p);
-                setBalance(node);
-                setBalance(p);
-                setBalance(y);
-            } else {
-                rotate(tree, node, p);
-                setBalance(p);
-                setBalance(node);
-            }
+            rotateUpFavoredSubtree(tree, node);
             return;
         }
     }
@@ -200,9 +191,11 @@ static void setBalance(Node *n) {
     rightHeight = (n -> right == NULL) ? 0 : n -> right -> height;
     n -> height = (leftHeight > rightHeight) ? leftHeight + 1 : rightHeight + 1;
     n -> balanceFactor = rightHeight - leftHeight;
+    if (n -> balanceFactor > 1 || n -> balanceFactor < -1)
+        fprintf(stderr, "Balance factor for node %s is out of bounds. Balance factor: %d\n", n -> key, n -> balanceFactor);
 }
 
-static bool favorsSibling(Node *child) {
+static bool isParentFavoringSibling(Node *child) {
     if (child == child -> parent -> left)
         return (child -> parent -> balanceFactor > 0) ? true : false;
     else
@@ -274,3 +267,20 @@ static char *getFavSymbol(Node *node) {
         return "+";
     return "";
 }
+
+static void rotateUpFavoredSubtree(BST *tree, Node *node) {
+    Node *y = favoriteChild(node);
+    Node *p = node -> parent;
+    if (y != NULL && !isLinear(y, node, p)) {
+        rotate(tree, y, node);
+        rotate(tree, y, p);
+        setBalance(node);
+        setBalance(p);
+        setBalance(y);
+    } else {
+        rotate(tree, node, p);
+        setBalance(p);
+        setBalance(node);
+    }
+    return;
+};
