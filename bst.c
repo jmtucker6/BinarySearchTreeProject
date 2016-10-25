@@ -118,7 +118,7 @@ void traversal(BST *tree)
     Node *node = tree -> root;
     node -> parent = node;
     enqueue(tree -> q, node);
-    for (int i = 1; i <= tree -> height; i++) {
+    for (int i = 0; i < tree -> height; i++) {
         printf("%d:", i);
         while (!isEmptyQueue(tree -> q) && tree -> q -> head -> data -> level == i) {
             printf(" ");
@@ -143,7 +143,7 @@ void traversal(BST *tree)
 }
 
 void setLevels(BST *tree, Node *node) {
-    node -> level = (node == tree -> root) ? 1 : node -> parent -> level + 1;
+    node -> level = (node == tree -> root) ? 0 : node -> parent -> level + 1;
     if (node -> left != NULL)
         setLevels(tree, node -> left);
     if (node -> right != NULL)

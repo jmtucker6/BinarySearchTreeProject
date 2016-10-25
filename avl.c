@@ -58,7 +58,7 @@ void traversalAVL(BST *tree) {;
     Node *node = tree -> root;
     node -> parent = node;
     enqueue(tree -> q, node);
-    for (int i = 1; i <= tree -> height; i++) {
+    for (int i = 0; i < tree -> height; i++) {
         printf("%d:", i);
         while (!isEmptyQueue(tree -> q) && tree -> q -> head -> data -> level == i) {
             node = dequeue(tree -> q);
