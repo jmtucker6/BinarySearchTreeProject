@@ -23,7 +23,7 @@ static Node *favoriteChild(Node *);
 static bool isLinear(Node *, Node *, Node *);
 static void rotate(BST *, Node *, Node *);
 static int numChildren(Node *);
-static void swapNodes(Node *, Node *);
+static void swapNodeKeyFreq(Node *, Node *);
 static void deleteLeafNode(Node *);
 static char *getFavSymbol(Node *);
 static void rotateUpFavoredSubtree(BST *, Node *);
@@ -91,8 +91,9 @@ void traversalAVL(BST *tree) {;
 static void deleteNodeAVL(BST *tree, Node *node) {
     if (numChildren(node) == 0) {
         node -> height = 0;
-        deletionFixup(tree, node -> parent);
+        Node *parent = node -> parent;
         deleteLeafNode(node);
+        deletionFixup(tree, parent);
     } else if (numChildren(node) == 1) {
         if (node -> right != NULL) {
             transplant(tree, node, node -> right);
@@ -103,8 +104,8 @@ static void deleteNodeAVL(BST *tree, Node *node) {
         }
     } else {
         Node *succ = treeMinimum(node -> right);
-        swapNodes(node, succ);
-        deleteNodeAVL(tree, node);
+        swapNodeKeyFreq(node, succ);
+        deleteNodeAVL(tree, succ);
     }
 }
 static void insertionFixup(BST *tree, Node *node) {
@@ -229,27 +230,14 @@ static int numChildren(Node *node) {
     return 0;
 }
 
-static void swapNodes(Node *node1, Node *node2) {
-    if (node1 -> left != NULL)
-        node1 -> left -> parent = node2;
-    if (node1 -> right != NULL)
-        node1 -> right -> parent = node2;
-    if (node2 -> left != NULL)
-        node2 -> left -> parent = node1;
-    if (node2 -> right != NULL)
-        node2 -> right -> parent = node1;
-    
-    Node *temp = node1 -> parent;
-    node1 -> parent = node2 -> parent;
-    node2 -> parent = temp;
+static void swapNodeKeyFreq(Node *node1, Node *node2) {
+    char* tempKey = node1 -> key;
+    node1 -> key = node2 -> key;
+    node2 -> key = tempKey;
 
-    temp = node1 -> left;
-    node1 -> left = node2 -> left;
-    node2 -> left = temp;
-    
-    temp = node1 -> right;
-    node1 -> right = node2 -> right;
-    node2 -> right = temp;
+    int tempFreq = node1 -> frequency;
+    node1 -> frequency = node2 -> frequency;
+    node2 -> frequency = tempFreq;
 }
 
 static void deleteLeafNode(Node *node) {

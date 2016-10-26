@@ -56,7 +56,7 @@ int main(int argc, char **argv)
                     break;
                 case 'f':
                     temp = cleanString(readNextToken(fp));
-                    printf("%d\n", findKey(bst, bst -> root, temp));
+                    printf("Frequency of \"%s\": %d\n", temp, findKey(bst, bst -> root, temp));
                     break;
                 case 's':
                     if (treeType == NORMAL)

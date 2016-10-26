@@ -10,10 +10,10 @@ static int closestNull(BST *, Queue *, Node *);
  * PUBLIC FUNCTIONS
  */
 void reportStats(BST *tree) {
+    printf("Number of Nodes: %d\n",countNodes(tree -> root));
     if (isEmptyTree(tree))
         return;
     Queue *queue = newQueue();
-    printf("Number of Nodes: %d\n",countNodes(tree -> root));
     printf("Closest Node w/ Null child: %d\n", closestNull(tree, queue, tree -> root));
     printf("Farthest Node w/ Null child: %d\n", tree -> height - 1);
 }
@@ -30,11 +30,11 @@ static int countNodes(Node *node) {
 
 static int closestNull(BST *tree, Queue *queue, Node *node) {
     if (node == tree -> root)
-        node -> level = 1;
+        node -> level = 0;
     else
         node -> level = node -> parent -> level + 1;
     if (node -> right == NULL || node -> left == NULL)
-        return node -> level - 1;
+        return node -> level;
     else {
         enqueue(queue, node -> left);
         enqueue(queue, node -> right);

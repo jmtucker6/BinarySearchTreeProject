@@ -177,10 +177,6 @@ Node *findNode(BST *tree, Node *node, char *key) {
  */
 static void deleteNode(BST *tree, Node *node)
 {
-    if (tree -> root == node) {
-        tree -> root = NULL;
-        return;
-    }
     Node *y;
     if (node -> left == NULL) {
         transplant(tree, node, node -> right);
