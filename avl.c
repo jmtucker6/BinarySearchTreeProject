@@ -91,9 +91,8 @@ void traversalAVL(BST *tree) {;
 static void deleteNodeAVL(BST *tree, Node *node) {
     if (numChildren(node) == 0) {
         node -> height = 0;
-        Node *parent = node -> parent;
+        deletionFixup(tree, node);
         deleteLeafNode(node);
-        deletionFixup(tree, parent);
     } else if (numChildren(node) == 1) {
         if (node -> right != NULL) {
             transplant(tree, node, node -> right);

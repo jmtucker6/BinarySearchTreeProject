@@ -114,6 +114,7 @@ void traversal(BST *tree)
 {
     if (isEmptyTree(tree))
         return;
+    tree -> height = 0;
     setLevels(tree, tree -> root);
     Node *node = tree -> root;
     node -> parent = node;
@@ -144,6 +145,8 @@ void traversal(BST *tree)
 
 void setLevels(BST *tree, Node *node) {
     node -> level = (node == tree -> root) ? 0 : node -> parent -> level + 1;
+    tree -> height = (tree -> height < node -> level + 1) ? node -> level + 1
+        : tree -> height;
     if (node -> left != NULL)
         setLevels(tree, node -> left);
     if (node -> right != NULL)
