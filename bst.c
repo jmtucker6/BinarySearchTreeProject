@@ -26,7 +26,6 @@ static void deleteNode(BST *, Node *);
 void insertWord(BST *tree, Node *parent, char *key) {
     if (isEmptyTree(tree)) {
         tree -> root = newNode(NULL, key);
-        tree -> height = 1;
         return;
     }
     if (strcmp(key, parent -> key) == 0) {
@@ -34,16 +33,12 @@ void insertWord(BST *tree, Node *parent, char *key) {
     } else if (strcmp(key, parent -> key) < 0) {
         if (parent -> left == NULL) {
             parent -> left = newNode(parent, key);
-            tree -> height = (parent -> left -> level > tree -> height) 
-                ? parent -> left -> level : tree -> height;
         } else {
             insertWord(tree, parent -> left, key);
         }
     } else {
         if (parent -> right == NULL) {
             parent -> right = newNode(parent, key);
-            tree -> height = (parent -> right -> level > tree -> height) 
-                ? parent -> right -> level : tree -> height;
         } else {
             insertWord(tree, parent -> right, key);
         }
@@ -110,6 +105,9 @@ BST *newBST(void)
     return bst;
 };
 
+/**
+ * Prints out BST in format given by the specification
+ */
 void traversal(BST *tree)
 {
     if (isEmptyTree(tree))
@@ -143,6 +141,9 @@ void traversal(BST *tree)
     };
 }
 
+/**
+ * Sets each node's level and the tree height
+ */
 void setLevels(BST *tree, Node *node) {
     node -> level = (node == tree -> root) ? 0 : node -> parent -> level + 1;
     tree -> height = (tree -> height < node -> level + 1) ? node -> level + 1
@@ -198,18 +199,21 @@ static void deleteNode(BST *tree, Node *node)
         y -> left = node -> left;
         y -> left -> parent = y;
     }
-    // if (isEmptyTree(tree))
-    //     fprintf(stderr, "Cannot delete from empty tree\n");
-    // fprintf(stderr, "Delete Node on %s  not implemented\n", key);
 };
 
+/*
+ * Returns the minimum of a subtree
+ * Often used to obtain the successor
+ */
 Node *treeMinimum(Node *root) {
     while (root -> left != NULL)
         root = root -> left;
     return root;
 };
 
-
+/**
+ * Replaces a subtree with root currNode by the subtree with root replacement
+ */
 void transplant(BST *tree, Node *currNode, Node *replacement) {
 
     if (currNode == tree -> root)

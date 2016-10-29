@@ -21,4 +21,23 @@ stats.o: stats.h stats.c queue.h bst.h
 clean : 
 	rm -rf $(OBJS) trees
 test : trees
-	@echo Include testing inputs
+	@echo Running large AVL test
+	./avltest
+	@echo
+	@echo Normal on spec input
+	./trees -b input1.txt corpus
+	@echo
+	@echo AVL on spec input
+	./trees -a input1.txt corpus
+	@echo
+	@echo Normal with deletions
+	./trees -b input1.txt corpus2
+	@echo
+	@echo AVL with deletions
+	./trees -a input1.txt corpus2
+	@echo
+	@echo Normal on short story
+	./trees -b input2.txt corpus
+	@echo
+	@echo AVL on short story
+	./trees -a input2.txt corpus

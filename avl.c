@@ -178,6 +178,9 @@ static void deletionFixup(BST *tree, Node *node) {
     }
 };
 
+/**
+ * Performs rotation to fix tree imbalance after a deletion
+ */
 static Node *rotateAfterDelete(BST *tree, Node *node) {
     Node *parent = node -> parent;
     Node *sibling = favoriteChild(parent);      // favorite child is sibling
@@ -246,8 +249,6 @@ static void setBalance(Node *n) {
     rightHeight = (n -> right == NULL) ? 0 : n -> right -> height;
     n -> height = (leftHeight > rightHeight) ? leftHeight + 1 : rightHeight + 1;
     n -> balanceFactor = rightHeight - leftHeight;
-    if (n -> balanceFactor > 1 || n -> balanceFactor < -1)
-        fprintf(stderr, "Balance factor for node %s is out of bounds. Balance factor: %d\n", n -> key, n -> balanceFactor);
 }
 
 /**

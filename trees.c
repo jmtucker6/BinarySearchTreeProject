@@ -8,10 +8,23 @@
 #include "scanner.h"
 #include "stats.h"
 
+/**
+ * trees.c
+ *
+ * Main driver for assignment2
+ * Converts input into BST instructions
+ *
+ * Written by Jacob Tucker
+ */
+
 typedef enum TreeType {NORMAL, AVL} TreeType;
 static char *readNextToken(FILE *);
 static char *cleanString(char *);
 
+/**
+ * Main function for trees
+ * Command Line: ./trees -a/-b [inputFile] [commandFile]
+ */
 int main(int argc, char **argv)
 {
     if (argc < 4)
@@ -74,6 +87,9 @@ int main(int argc, char **argv)
     return 0;
 }
 
+/**
+ * Reads next token from a file
+ */
 static char *readNextToken(FILE *fp) {
     char *s;
     if(stringPending(fp))
@@ -83,6 +99,9 @@ static char *readNextToken(FILE *fp) {
     return s;
 };
 
+/**
+ * Removes non-alpha characters and collapses white space
+ */
 static char *cleanString(char *s)
 {
     char *dest = s, *src = s;
