@@ -24,6 +24,8 @@ static void deleteNode(BST *, Node *);
  */
 
 void insertWord(BST *tree, Node *parent, char *key) {
+    if (strcmp(key, "") == 0)
+        return;
     if (isEmptyTree(tree)) {
         tree -> root = newNode(NULL, key);
         return;
@@ -49,6 +51,8 @@ void insertWord(BST *tree, Node *parent, char *key) {
  * Deletes a word from the tree (decreases frequency)
  */
 void deleteWord(BST *tree, char *key) {
+    if (strcmp(key, "") == 0)
+        return;
     Node *node = findNode(tree, tree -> root, key);
     if (node == NULL) {
         fprintf(stderr, "Can't delete a word that is not in the tree\n");

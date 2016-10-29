@@ -4,5 +4,7 @@ d fox
 d the
 d the
 d quick
+i #$*
+d #$*
 s
 r

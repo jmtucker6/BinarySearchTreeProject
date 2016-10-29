@@ -37,6 +37,8 @@ static char *getFavSymbol(Node *);
  * Either increases the frequency of an existing node or inserts a new node
  */
 void insertWordAVL(BST *tree, Node *parent, char *key) {
+    if (strcmp(key, "") == 0)
+        return;
     insertWord(tree, parent, key);
     Node *node = findNode(tree, tree -> root, key);
     if (node -> frequency == 1)
@@ -50,6 +52,8 @@ void insertWordAVL(BST *tree, Node *parent, char *key) {
 void deleteWordAVL(BST *tree, char *key) {
     if(isEmptyTree(tree))
         fprintf(stderr, "Can't Delete from Empty Tree\n");
+    if (strcmp(key, "") == 0)
+        return;
     Node *node = findNode(tree, tree -> root, key);
     if(node == NULL)
         fprintf(stderr, "Node to Delete Does Not Exist\n");
